@@ -1,12 +1,17 @@
 package entidades;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Scanner;
 
+import utils.ConexBD;
 import utils.Datos;
 import utils.Utilidades;
 import validaciones.Validaciones;
 
-public class Atleta extends Participante {
+public class Atleta extends Participante implements operacionesCRUD<Atleta> {
 	private long idAtleta;
 	private float altura;
 	private float peso;
@@ -136,6 +141,67 @@ public class Atleta extends Participante {
 	public String toString() {
 		return "" + persona.getNombre() + " (" + persona.getNifnie().mostrar() + ") del año "
 				+ persona.getFechaNac().getYear() + "\t" + peso + "Kgs. " + altura + "m.";
+	}
+
+	@Override
+	public boolean InsertarConID(Atleta elemento) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public long InsertarSinID(Atleta elemento) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	
+
+	@Override
+	public Atleta buscarPorID(long idAtleta) {
+		Atleta ret = null;
+		int a = -1;
+		Connection conex = null;
+		Statement consulta = null;
+		ResultSet resultado = null;
+		try {
+			
+
+			conex = ConexBD.establecerConexion();
+
+			String consultaStr = "SELECT * FROM lugares where id"+idAtleta;
+			if (conex == null)
+				conex = ConexBD.getCon();
+			consulta = conex.createStatement();
+			resultado = consulta.executeQuery(consultaStr);
+			while (idAtleta	 == resultado.getInt(1)) {
+				while (resultado.next()) {
+					String nombre = resultado.getString(2);
+					String ubicacion = resultado.getString(3);
+					boolean airelibre = resultado.getBoolean(4);
+
+				}
+				return ret;
+			}
+		} catch (SQLException e) {
+			System.out.println("Se ha producido una Excepcion:" + e.getMessage());
+			e.printStackTrace();
+		} finally {
+			try {
+				System.out.println("Cerrando recursos...");
+				if (resultado != null)
+					resultado.close();
+				if (consulta != null)
+					consulta.close();
+				if (conex != null)
+					conex.close();
+			} catch (SQLException e) {
+				System.out.println("Se ha producido una Excepcion:" + e.getMessage());
+				e.printStackTrace();
+			}
+		}
+		System.out.println("FIN");
+		return ret;
 	}
 
 }
