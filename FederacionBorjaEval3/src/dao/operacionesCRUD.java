@@ -1,4 +1,4 @@
-package entidades;
+package dao;
 
 public interface operacionesCRUD<T> {
 	/**

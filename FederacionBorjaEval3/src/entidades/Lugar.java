@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
 
+import dao.operacionesCRUD;
 import utils.ConexBD;
 
 //Examen 1 Ejercicio 1
