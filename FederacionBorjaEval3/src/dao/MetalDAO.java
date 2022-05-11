@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.time.LocalDate;
+import java.util.Collection;
 
 import entidades.Manager;
 import entidades.Metal;
@@ -23,9 +24,10 @@ public class MetalDAO implements operacionesCRUD<Metal> {
 			this.conex = conex;
 	}
 
-	@Override
-	public boolean InsertarConID(Metal m) {
+	
 
+	@Override
+	public boolean insertarConID(Metal m) {
 		boolean ret = false;
 		Connection conex = ConexBD.establecerConexion();
 		String consultaInsertStr = "insert into responsables(id, fecha, asignada) values (?,?,?)";
@@ -46,9 +48,10 @@ public class MetalDAO implements operacionesCRUD<Metal> {
 		}
 		return ret;
 	}
+	
 
 	@Override
-	public long InsertarSinID(Metal m) {
+	public long insertarSinID(Metal m) {
 		long ret = -1;
 		Connection conex = ConexBD.establecerConexion();
 		String consultaInsertStr = "insert into metales(fecha,asignada) values (?,?)";
@@ -90,6 +93,7 @@ public class MetalDAO implements operacionesCRUD<Metal> {
 		}
 
 		return ret;
+	
 	}
 
 	@Override
@@ -126,5 +130,22 @@ public class MetalDAO implements operacionesCRUD<Metal> {
 //	}
 
 }
+	@Override
+	public Collection<Metal> buscarTodos() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean modificar(Metal elemento) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean eliminar(Metal elemento) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
 

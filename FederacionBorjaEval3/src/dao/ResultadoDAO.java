@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.util.Collection;
 
 import entidades.Participante;
 
@@ -13,21 +14,38 @@ public class ResultadoDAO implements operacionesCRUD<Participante> {
 	}
 
 	@Override
-	public boolean InsertarConID(Participante elemento) {
+	public boolean insertarConID(Participante elemento) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public long InsertarSinID(Participante elemento) {
+	public long insertarSinID(Participante elemento) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public Participante buscarPorID(long idelemento) {
+	public Participante buscarPorID(long id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Override
+	public Collection<Participante> buscarTodos() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean modificar(Participante elemento) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean eliminar(Participante elemento) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

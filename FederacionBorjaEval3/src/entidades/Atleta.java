@@ -12,10 +12,11 @@ import utils.Datos;
 import utils.Utilidades;
 import validaciones.Validaciones;
 
-public class Atleta extends Participante implements operacionesCRUD<Atleta> {
+public class Atleta extends Participante {
 	private long idAtleta;
 	private float altura;
 	private float peso;
+	private long idEquipo;
 
 	private DatosPersona persona;
 
@@ -51,6 +52,10 @@ public class Atleta extends Participante implements operacionesCRUD<Atleta> {
 		this.persona = Datos.buscarPersonaPorId(a.idAtleta);
 	}
 
+	public Atleta() {
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
 	public long getId() {
 		return idAtleta;
@@ -79,6 +84,26 @@ public class Atleta extends Participante implements operacionesCRUD<Atleta> {
 
 	public DatosPersona getPersona() {
 		return this.persona;
+	}
+
+	public long getIdAtleta() {
+		return idAtleta;
+	}
+
+	public void setIdAtleta(long idAtleta) {
+		this.idAtleta = idAtleta;
+	}
+
+	public long getIdEquipo() {
+		return idEquipo;
+	}
+
+	public void setIdEquipo(long idEquipo) {
+		this.idEquipo = idEquipo;
+	}
+
+	public void setPersona(DatosPersona persona) {
+		this.persona = persona;
 	}
 
 	// Examen 5 Ejercicio 5
@@ -141,68 +166,7 @@ public class Atleta extends Participante implements operacionesCRUD<Atleta> {
 	@Override
 	public String toString() {
 		return "" + persona.getNombre() + " (" + persona.getNifnie().mostrar() + ") del año "
-				+ persona.getFechaNac().getYear() + "\t" + peso + "Kgs. " + altura + "m.";
-	}
-
-	@Override
-	public boolean InsertarConID(Atleta elemento) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public long InsertarSinID(Atleta elemento) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	
-
-	@Override
-	public Atleta buscarPorID(long idAtleta) {
-		Atleta ret = null;
-		int a = -1;
-		Connection conex = null;
-		Statement consulta = null;
-		ResultSet resultado = null;
-		try {
-			
-
-			conex = ConexBD.establecerConexion();
-
-			String consultaStr = "SELECT * FROM lugares where id"+idAtleta;
-			if (conex == null)
-				conex = ConexBD.getCon();
-			consulta = conex.createStatement();
-			resultado = consulta.executeQuery(consultaStr);
-			while (idAtleta	 == resultado.getInt(1)) {
-				while (resultado.next()) {
-					String nombre = resultado.getString(2);
-					String ubicacion = resultado.getString(3);
-					boolean airelibre = resultado.getBoolean(4);
-
-				}
-				return ret;
-			}
-		} catch (SQLException e) {
-			System.out.println("Se ha producido una Excepcion:" + e.getMessage());
-			e.printStackTrace();
-		} finally {
-			try {
-				System.out.println("Cerrando recursos...");
-				if (resultado != null)
-					resultado.close();
-				if (consulta != null)
-					consulta.close();
-				if (conex != null)
-					conex.close();
-			} catch (SQLException e) {
-				System.out.println("Se ha producido una Excepcion:" + e.getMessage());
-				e.printStackTrace();
-			}
-		}
-		System.out.println("FIN");
-		return ret;
+				+ persona.getFechaNac().getYear() + "\t" + peso + "Kgs. " + altura + "m." + this.idEquipo;
 	}
 
 }

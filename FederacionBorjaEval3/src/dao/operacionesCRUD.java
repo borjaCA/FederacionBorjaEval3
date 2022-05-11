@@ -1,34 +1,48 @@
 package dao;
 
+import java.util.Collection;
+
 public interface operacionesCRUD<T> {
-	/**
-	 * Este metodo inserta en la taba correspodiente de bdfederaciones un nuevo
-	 * registro
+	/***
+	 * Este método inserta en la tabla correspondiente de la BD bdfederacion un
+	 * nuevo registro
 	 * 
-	 * @param elemento de tipo que se quiere insertar como nuevo elemento completo
-	 *                 (con id)
-	 * @return true si la insercion fue exitosa, false en caso contrario
+	 * @param elemento del tipo que se quiere insertar como nuevo elemento completo
+	 *                 (con ID)
+	 * @return true si la inserción fue exitosa, false en caso contrario
 	 */
-	public boolean InsertarConID(T elemento);
+	public boolean insertarConID(T elemento);
+
+	/***
+	 * Este método inserta en la tabla correspondiente de la BD bdfederacion un
+	 * nuevo registro
+	 * 
+	 * @param elemento del tipo que se quiere insertar como nuevo elemento completo
+	 *                 (sin ID, que es autocalculado)
+	 * @return id del nuevo elemento insertado si tuvo éxito, o -1 en caso contarrio
+	 */
+	public long insertarSinID(T elemento);
+
+	/***
+	 * Funcion que busca en la tabla correspondiente si hay un elemento cuyo id
+	 * coincide con el que se pasa como parámero
+	 * 
+	 * @param id identificador del elemento a buscar
+	 * @return el elemento si existe o null si no
+	 */
+	public T buscarPorID(long id);
 
 	/**
-	 * Este metodo inserta en la taba correspodiente de bdfederaciones un nuevo
-	 * registro
+	 * Funcion que devuelva la coleccion de todos los elementos de un tipo
 	 * 
-	 * @param elemento de tipo que se quiere insertar como nuevo elemento
-	 *                 completo(sin id, autocompletable)
-	 * @return id del nuevo elemento insertado si tuvo exito, o -1 en caso contrario
+	 * @return la coleccion de elementos que puede ser vacía
 	 */
+	public Collection<T> buscarTodos();
+	
+	public boolean modificar(T elemento);
+	
+//	public boolean modificarTodos(Collection<T> coleccion);
+	
+	public boolean eliminar(T elemento);
 
-	public long InsertarSinID(T elemento);
-
-	/*
-	 * EXAMEN 10 EJERCICIO 10 Añadir a la interfaz operacionesCRUD<T> un nuevo
-	 * método T buscarPorID(long id) que devuelve el objeto T cuyo identificador
-	 * coincide con el valor que se pasa como parámetro (o null en caso de que no
-	 * exista) haciendo una consulta a la tabla correspondiente a la entidad del
-	 * tipo T en la BD bdfederacion. Reimplementar ese método para las entidades
-	 * Atleta y Patrocinador, así como para la enumeración Lugar
-	 */
-	public T buscarPorID(long idelemento);
 }

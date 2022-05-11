@@ -33,6 +33,10 @@ public class Manager {
 		this.persona = dp;
 	}
 
+	public Manager() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public long getId() {
 		return id;
 	}

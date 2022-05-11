@@ -83,7 +83,7 @@ public class Equipo extends Participante {
 	@Override
 	public String toString() {
 		String ret = "";
-		ret += "EQ" + idEquipo + " ("+nombre+") de " + manager.getPersona().getNombre() + " (" + manager.getDireccion() + ") "
+		ret +=  idEquipo + " .("+nombre+") de " + manager.getPersona().getNombre() + " (" + manager.getDireccion() + ") "
 				+ atletas.length + " componentes en el equipo:\n";
 		for (Atleta a : atletas) {
 			ret += a.getId() + ". " + a.getPersona().getNombre() + "("
