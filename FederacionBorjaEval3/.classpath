@@ -6,12 +6,12 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/federacionsolu/Federacion_SOL/libs/mysql-connector-java-8.0.26.jar">
+	<classpathentry kind="lib" path="/federacionsol/Federacion_SOL/libs/mysql-connector-java-8.0.26.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/federacionsolu/Federacion_SOL/libs/valnif.jar">
+	<classpathentry kind="lib" path="/federacionsol/Federacion_SOL/libs/valnif.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>

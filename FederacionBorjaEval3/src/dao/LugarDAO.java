@@ -22,6 +22,10 @@ public class LugarDAO implements operacionesCRUD<Lugar> {
 	 * 
 	 */
 
+	public LugarDAO(Connection conex) {
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
 	public boolean insertarConID(Lugar l) {
 		boolean ret = false;
@@ -97,12 +101,13 @@ public class LugarDAO implements operacionesCRUD<Lugar> {
 
 			conex = ConexBD.establecerConexion();
 
-			String consultaStr = "SELECT * FROM lugares where id" + idlugar;
+			String consultaStr = "SELECT * FROM lugares where id=" + idlugar;
 			if (conex == null)
 				conex = ConexBD.getCon();
 			consulta = conex.createStatement();
 			resultado = consulta.executeQuery(consultaStr);
-			while (idlugar == resultado.getInt(1)) {
+			long aux = resultado.getLong("id");
+			while (Integer.valueOf("" + idlugar).intValue() == aux) {
 				while (resultado.next()) {
 					String nombre = resultado.getString(2);
 					String ubicacion = resultado.getString(3);

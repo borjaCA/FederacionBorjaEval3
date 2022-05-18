@@ -1,22 +1,20 @@
 package dao;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
-import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 
-import entidades.Manager;
 import entidades.Metal;
-import entidades.Participante;
-import entidades.Responsable;
+import entidades.Oro;
+import entidades.Plata;
+import entidades.Bronce;
 import utils.ConexBD;
-import utils.Datos;
 
 public class MetalDAO implements operacionesCRUD<Metal> {
+
 	Connection conex;
 
 	public MetalDAO(Connection conex) {
@@ -24,116 +22,121 @@ public class MetalDAO implements operacionesCRUD<Metal> {
 			this.conex = conex;
 	}
 
-	
-
 	@Override
-	public boolean insertarConID(Metal m) {
-		boolean ret = false;
-		Connection conex = ConexBD.establecerConexion();
-		String consultaInsertStr = "insert into responsables(id, fecha, asignada) values (?,?,?)";
-		try {
-			PreparedStatement pstmt = conex.prepareStatement(consultaInsertStr);
-
-			pstmt.setLong(1, m.getId());
-			java.sql.Date fechaSQL = java.sql.Date.valueOf(m.getFecha());
-			pstmt.setDate(2, fechaSQL);
-			pstmt.setBoolean(3, m.asignada);
-
-			int resultadoInsercion = pstmt.executeUpdate();
-			ret = (resultadoInsercion == 1);
-
-		} catch (SQLException e) {
-			System.out.println("Se ha producido una SQLException:" + e.getMessage());
-			e.printStackTrace();
-		}
-		return ret;
+	public boolean insertarConID(Metal elemento) {
+		// TODO Auto-generated method stub
+		return false;
 	}
-	
 
 	@Override
 	public long insertarSinID(Metal m) {
 		long ret = -1;
-		Connection conex = ConexBD.establecerConexion();
-		String consultaInsertStr = "insert into metales(fecha,asignada) values (?,?)";
+		String consultaInsertStr1 = "insert into metales(pureza, asignada, idoro, idplata, idbronce ) values (?,?,?,?,?)";
 		try {
-			PreparedStatement pstmt = conex.prepareStatement(consultaInsertStr);
-
-			pstmt.setLong(1, m.getId());
-			java.sql.Date fechaSQL = java.sql.Date.valueOf(m.getFecha());
-			pstmt.setDate(2, fechaSQL);
-			pstmt.setBoolean(3, m.asignada);
+			if (this.conex == null || this.conex.isClosed())
+				this.conex = ConexBD.establecerConexion();
+			PreparedStatement pstmt = conex.prepareStatement(consultaInsertStr1);
+			pstmt.setFloat(1, m.getPureza());
+			pstmt.setBoolean(2, m.isAsignada());
+			if (m.getClass().equals(Oro.class)) {
+				m = (Oro) m;
+				pstmt.setLong(3, ((Oro) m).getId());
+				pstmt.setNull(4, java.sql.Types.INTEGER);
+				pstmt.setNull(5, java.sql.Types.INTEGER);
+			} else if (m.getClass().equals(Plata.class)) {
+				m = (Plata) m;
+				pstmt.setNull(3, java.sql.Types.INTEGER);
+				pstmt.setLong(4, ((Plata) m).getId());
+				pstmt.setNull(5, java.sql.Types.INTEGER);
+			} else {
+				m = (Bronce) m;
+				pstmt.setNull(3, java.sql.Types.INTEGER);
+				pstmt.setNull(4, java.sql.Types.INTEGER);
+				pstmt.setLong(5, ((Bronce) m).getId());
+			}
 
 			int resultadoInsercion = pstmt.executeUpdate();
 			if (resultadoInsercion == 1) {
-				String consultaSelect = "SELECT id FROM metales WHERE (fecha=? AND asignada=? )";
-				PreparedStatement pstmt2 = conex.prepareStatement(consultaInsertStr);
+				String consultaSelect = "SELECT id FROM metales WHERE (pureza=? AND ";
+				PreparedStatement pstmt2 = conex.prepareStatement(consultaSelect);
+				pstmt2.setFloat(1, m.getPureza());
+				if (m.getClass().equals(Oro.class)) {
+					consultaSelect += " idoro=?)";
+					pstmt2.setLong(2, ((Oro) m).getId());
+				} else if (m.getClass().equals(Plata.class)) {
+					consultaSelect += " idplata=?)";
+					pstmt2.setLong(2, ((Plata) m).getId());
+				} else {
+					consultaSelect += " idbronce=?)";
+					pstmt2.setLong(2, ((Bronce) m).getId());
+				}
 
-				pstmt2.setLong(1, m.getId());
-				java.sql.Date fechaSQL2 = java.sql.Date.valueOf(m.getFecha());
-				pstmt2.setDate(2, fechaSQL2);
-				pstmt2.setBoolean(3, m.asignada);
 				ResultSet result = pstmt2.executeQuery();
 				while (result.next()) {
-					long id = result.getLong("id");
-					if (id != -1)
-						ret = id;
+					long idmetal = result.getLong("id");
+					if (idmetal != -1)
+						ret = idmetal;
 				}
 				result.close();
 				pstmt2.close();
 			}
-			pstmt.close();
 		} catch (SQLException e) {
 			System.out.println("Se ha producido una SQLException:" + e.getMessage());
-			e.printStackTrace();
-			return -1;
-		} catch (Exception e) {
-			System.out.println("Se ha producido una Exception:" + e.getMessage());
 			e.printStackTrace();
 			return -1;
 		}
 
 		return ret;
-	
 	}
 
 	@Override
 	public Metal buscarPorID(long id) {
-		return null;
-//		Metal ret = null;
-//		Connection conex = ConexBD.establecerConexion();
-//		String consultaInsertStr = "select * FROM managers WHERE id=?";
-//		try {
-//			PreparedStatement pstmt = conex.prepareStatement(consultaInsertStr);
-//			pstmt.setLong(1, id);
-//			ResultSet result = pstmt.executeQuery();
-//			while (result.next()) {
-//				long idBD = result.getLong("id");
-//				long idPersona = result.getLong("idpersona");
-//				Time fecha = result.getTime("fecha");
-//				Boolean asignada = result.getBoolean("asignada");
-//				ret = new Metal();
-//				ret.setId(idBD);
-//				/*
-//				 * ESTA PARTE LA TENGO MAL Y NOSE PORQUE YO CREO QUE SE TIENE QUE HACER ASI
-//				 * ret.setFecha(fecha);
-//				 */
-//				ret.setPersona(Datos.buscarPersonaPorId(idPersona));
-//			}
-//		} catch (SQLException e) {
-//			System.out.println("Se ha producido una SQLException:" + e.getMessage());
-//			e.printStackTrace();
-//		} catch (Exception e) {
-//			System.out.println("Se ha producido una Exception:" + e.getMessage());
-//			e.printStackTrace();
-//		}
-//		return ret;
-//	}
-
-}
-	@Override
-	public Collection<Metal> buscarTodos() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public Collection<Metal> buscarTodos() {
+		Metal m = null;
+
+		Collection<Metal> metales = new ArrayList<Metal>();
+		Connection conex = ConexBD.establecerConexion();
+		String consultaSelect = "select * FROM metales";
+		try {
+			PreparedStatement pstmt = conex.prepareStatement(consultaSelect);
+			ResultSet result = pstmt.executeQuery(consultaSelect);
+			while (result.next()) {
+				// pureza, asignada, idoro, idplata, idbronce
+
+				long idOro = result.getLong("idoro");
+				long idPlata = result.getLong("idplata");
+				long idBronce = result.getLong("idbronce");
+
+				Float pureza = result.getFloat("pureza");
+				boolean asignada = result.getBoolean("asignada");
+
+				if (idOro != 0) {
+					Oro o = new Oro(idOro, pureza);
+					o.setAsignada(asignada);
+					metales.add(o);
+				} else if (idPlata != 0) {
+					Plata p = new Plata(idPlata, pureza);
+					p.setAsignada(asignada);
+					metales.add(p);
+				} else {
+					Bronce b = new Bronce(idBronce, pureza);
+					b.setAsignada(asignada);
+					metales.add(b);
+				}
+
+			}
+		} catch (SQLException e) {
+			System.out.println("Se ha producido una SQLException:" + e.getMessage());
+			e.printStackTrace();
+		} catch (Exception e) {
+			System.out.println("Se ha producido una Exception:" + e.getMessage());
+			e.printStackTrace();
+		}
+		return metales;
 	}
 
 	@Override
@@ -147,5 +150,5 @@ public class MetalDAO implements operacionesCRUD<Metal> {
 		// TODO Auto-generated method stub
 		return false;
 	}
-}
 
+}

@@ -69,6 +69,10 @@ public class Prueba {
 		this.resultado = res;
 	}
 
+	public Prueba() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public Resultado getResultado() {
 		return resultado;
 	}

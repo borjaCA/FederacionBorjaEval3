@@ -105,4 +105,9 @@ public class Patrocinador {
 				+ rep + ", prueba=" + Arrays.toString(prueba) + "]";
 	}
 
+	public static Patrocinador nuevoPatrocinador() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
